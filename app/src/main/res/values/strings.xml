@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MovieDbApp2</string>
+    <string name="find_a_movie">Find a movie</string>
+    <string name="search_now">Search</string>
 </resources>

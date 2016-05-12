@@ -52,7 +52,6 @@ public class MovieAdapter extends BaseAdapter {
             holder = new ViewHolder();
 
             convertView = LayoutInflater.from(context).inflate(R.layout.row, parent, false);
-            //LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             holder.title = (TextView) convertView.findViewById(R.id.title_tv);
             holder.overview = (TextView) convertView.findViewById(R.id.overview_tv);
             holder.imageHolder = (ImageView) convertView.findViewById(R.id.poster_iv);

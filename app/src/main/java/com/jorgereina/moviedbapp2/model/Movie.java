@@ -8,6 +8,8 @@ public class Movie {
     private String title;
     private String overview;
     private String poster;
+    private String backdrop;
+    private String releaseDate;
 
     public String getTitle() {
         return title;
@@ -31,5 +33,21 @@ public class Movie {
 
     public void setPoster(String poster) {
         this.poster = poster;
+    }
+
+    public String getBackdrop() {
+        return backdrop;
+    }
+
+    public void setBackdrop(String backdrop) {
+        this.backdrop = backdrop;
+    }
+
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
     }
 }

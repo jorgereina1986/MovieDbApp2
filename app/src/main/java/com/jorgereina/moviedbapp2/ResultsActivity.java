@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -28,15 +30,12 @@ import java.util.List;
  */
 public class ResultsActivity extends AppCompatActivity{
 
-    private  String baseURL = "https://api.themoviedb.org/3/search/movie?query=";
+    private static final String BASE_URL = "https://api.themoviedb.org/3/search/movie?query=";
     private static final String API_KEY = "&api_key=fe321b50d58f46c550723750263ad677";
     private String searchQuery;
     private ListView lvMovies;
     private MovieAdapter adapter;
     private String URL;
-    //private ProgressDialog dialog;
-
-    // Git error fix - http://stackoverflow.com/questions/16614410/android-studio-checkout-github-error-createprocess-2-windows
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +48,7 @@ public class ResultsActivity extends AppCompatActivity{
         lvMovies = (ListView)findViewById(R.id.list_view);
 
         //creating URL
-        URL = baseURL+searchQuery+API_KEY;
+        URL = BASE_URL+searchQuery+API_KEY;
 
         // start
         new MovieTask().execute(URL);
@@ -89,6 +88,8 @@ public class ResultsActivity extends AppCompatActivity{
                     movie.setTitle(finalObject.getString("title"));
                     movie.setOverview(finalObject.getString("overview"));
                     movie.setPoster(finalObject.getString("poster_path"));
+                    movie.setBackdrop(finalObject.getString("backdrop_path"));
+                    movie.setReleaseDate(finalObject.getString("release_date"));
 
 
                     // adding the final object in the list
@@ -120,19 +121,22 @@ public class ResultsActivity extends AppCompatActivity{
         @Override
         protected void onPostExecute(final List<Movie> result) {
             super.onPostExecute(result);
-            //dialog.dismiss();
             if(result != null) {
                 adapter = new MovieAdapter(getApplicationContext(), result);
                 lvMovies.setAdapter(adapter);
-//                lvMovies.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                        Movie movieModel = result.get(position);
-//                        Intent intent = new Intent(ResultsActivity.this, DetailsActivity.class);
-//                        intent.putExtra("movieModel", new Gson().toJson(movieModel));
-//                        startActivity(intent);
-//                    }
-//                });
+
+                lvMovies.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Movie movieModel = result.get(position);
+                        Intent intent = new Intent(getApplicationContext(), DetailsActivity.class);
+                        intent.putExtra("title", movieModel.getTitle());
+                        intent.putExtra("overview", movieModel.getOverview());
+                        intent.putExtra("backdrop", movieModel.getBackdrop());
+                        startActivity(intent);
+                        Toast.makeText(getApplicationContext(), "You clicked on "+ movieModel.getTitle(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             } else {
                 Toast.makeText(getApplicationContext(), "Not able to fetch data from server, please check url.", Toast.LENGTH_SHORT).show();
             }
